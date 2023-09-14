@@ -1,0 +1,22 @@
+<div class="row" style="text-decoration: none;">
+    <div class="col-md-12" >
+        <img src="{{sp.anh}}" alt="">
+    </div>
+    <div class="col-md-6" >
+        <h2>
+            {{sp.ten}}
+        </h2>
+        <h3>
+            {{sp.giagoc}}
+        </h3>
+        <div class="d-flex">
+            <input type="number" class="form-control form-control-lg w-50" value="1" min="1" ng-model="soluong">
+            <button ng-click="themGioHang(sp, soluong)" class="btn btn-danger btn-lg">MUA NGAY</button>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        {{sp.mota}}
+    </div>
+</div>

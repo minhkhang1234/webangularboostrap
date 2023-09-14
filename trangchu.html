@@ -1,0 +1,184 @@
+<div id="carouselExample" class="carousel slide mb-4">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="https://banhtrungthu.biz/wp-content/uploads/2019/07/banner.jpg"  class="d-block w-100" alt="...">
+      </div>
+     
+      <div class="carousel-item">
+        <img src="https://topprint.vn/wp-content/uploads/2022/03/banner-topprint-in-hop-banh-trung-thu.jpg" class="d-block w-100" alt="...">
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="row">
+            <a style="text-decoration: none; color: black;" href="#!danhmuc/{{dm.slug}}" ng-repeat="dm in danhmuc" class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6 text-center">
+                <div>
+                    <img class="img-fluid img-thumbnail rounded rounded-circle bg-light" src="{{dm.hinh}}">
+                </div>
+                {{dm.ten}}
+              </a>
+        </div>
+    </div>
+</div>
+
+<div class="btn-group" role="group" aria-label="Basic outlined example">
+  <button ng-click="sapxep = 'giakhuyenmai'" type="button" class="btn btn{{ (sapxep=='giakhuyenmai')?'':'-outline' }}-warning">Thấp nhất</button>
+  <button ng-click="sapxep = '-giakhuyenmai'" type="button" class="btn btn{{ (sapxep=='-giakhuyenmai')?'':'-outline' }}-warning">Cao nhất</button>
+</div>
+
+<div class="row mb-4" >
+    <div ng-repeat="sp in sanpham | orderBy: sapxep | limitTo:phantrang.gioihan:(phantrang.dangchon-1)*phantrang.gioihan" class="col-lg-3 col-md-4 col-sm-6">
+        <div class="card" >
+            <img src="{{sp.anh}}" class="card-img-top" alt="...">
+            <div class="card-body text-center">
+              <a style="text-decoration: none; color: black;" href="#!chitiet/{{sp.id}}">
+                <h5 class="card-title" >{{sp.ten | uppercase}}</h5>
+              </a>
+              {{ '2023-08-25' | date: 'EEEE dd/MM/yyyy'}}
+              <h5 ng-if="sp.giakhuyenmai!=sp.giagoc" class="card-title text-danger">{{sp.giakhuyenmai | number }}đ</h5>
+              <h5 ng-if="sp.giakhuyenmai==sp.giagoc" class="card-title text-danger">{{sp.giagoc | number}}đ</h5>
+              <del ng-if="sp.giakhuyenmai!=sp.giagoc" class="card-text d-block">{{sp.giakhuyenmai |number}}đ</del>
+              <button ng-click="themGioHang(sp)" class="btn btn-warning w-100">MUA</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<nav class="d-flex" aria-label="Page navigation example">
+  <ul class="pagination mx-auto">
+    <li class="page-item {{ (phantrang.dangchon==1)?'disabled':'' }}">
+      <button ng-click="phantrang.dangchon = phantrang.dangchon - 1" class="page-link" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </button>
+    </li>
+    <li class="{{ ($index+1==phantrang.dangchon)?'active':'' }}" ng-repeat="trang in [].constructor(phantrang.sotrang) track by $index" class="page-item">
+      <button ng-click="phantrang.dangchon=$index+1" class="page-link">
+        {{$index+1}}
+      </button>
+    </li>
+    <li class="page-item {{ (phantrang.dangchon==phantrang.sotrang)?'disabled':'' }}">
+      <button ng-click="phantrang.dangchon = phantrang.dangchon + 1" class="page-link" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </button>
+    </li>
+  </ul>
+</nav>
+
+<div class="container my-5">
+
+  <footer class="bg-warning text-center text-lg-start text-white">
+    
+    <div class="container p-4">
+     
+      <div class="row my-4">
+      
+        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+
+          <div class="rounded-circle bg-white shadow-1-strong d-flex align-items-center justify-content-center mb-4 mx-auto" style="width: 150px; height: 150px;">
+            <img src="https://mdbootstrap.com/img/Photos/new-templates/animal-shelter/logo.png" height="70" alt=""
+                 loading="lazy" />
+          </div>
+
+          <p class="text-center">Bánh trung thu nhà làm ngon số 1 Việt Nam. Nếu dỡ xin hoàn lại 100% tiền và tặng thùng bánh ăn chơi</p>
+
+          <ul class="list-unstyled d-flex flex-row justify-content-center">
+            <li>
+              <a class="text-white px-2" href="#!">
+                <i class="fab fa-facebook-square"></i>
+              </a>
+            </li>
+            <li>
+              <a class="text-white px-2" href="#!">
+                <i class="fab fa-instagram"></i>
+              </a>
+            </li>
+            <li>
+              <a class="text-white ps-2" href="#!">
+                <i class="fab fa-youtube"></i>
+              </a>
+            </li>
+          </ul>
+
+        </div>
+       
+        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-uppercase mb-4">UPDATE HÀNG NGÀY</h5>
+
+          <ul class="list-unstyled">
+            <li class="mb-2">
+              <a href="#!" class="text-white">Bảng giá bánh trung thu</a>
+            </li>
+            <li class="mb-2">
+              <a href="#!" class="text-white">Hộp bánh trung thu</a>
+            </li>
+            <li class="mb-2">
+              <a href="#!" class="text-white">Sự kiện trung thu</a>
+            </li>
+            <li class="mb-2">
+              <a href="#!" class="text-white">Tin tức – hoạt động</a>
+            </li>
+           
+          </ul>
+        </div>
+       
+        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-uppercase mb-4">CHÍNH SÁCH KHÁCH HÀNG</h5>
+
+          <ul class="list-unstyled">
+            <li class="mb-2">
+              <a href="#!" class="text-white">Chính sách hoàn trả</a>
+            </li>
+            <li class="mb-2">
+              <a href="#!" class="text-white">Chính sách khách hàng</a>
+            </li>
+            <li class="mb-2">
+              <a href="#!" class="text-white">Chính sách bảo mật</a>
+            </li>
+            <li class="mb-2">
+              <a href="#!" class="text-white">Chính sách thanh toán</a>
+            </li>
+            <li class="mb-2">
+              <a href="#!" class="text-white">Chính sách vận chuyển</a>
+            </li>
+            
+          </ul>
+        </div>
+      
+        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-uppercase mb-4">LIÊN HỆ ĐƠN VỊ PHÂN PHỐI</h5>
+
+          <ul class="list-unstyled">
+            <li>
+              <p><i class="fas fa-map-marker-alt pe-2"></i>113 - Đồn Cảnh Sát Thành Phố HCM</p>
+            </li>
+            <li>
+              <p><i class="fas fa-phone pe-2"></i>0981419091</p>
+            </li>
+            <li>
+              <p><i class="fas fa-envelope pe-2 mb-0"></i>khangdeptrai.com</p>
+            </li>
+          </ul>
+        </div>
+        
+      </div>
+     
+    </div>
+   
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+      © 2023 Copyright: Khang dep trai
+    
+    </div>
+   
+  </footer>
+
+</div>

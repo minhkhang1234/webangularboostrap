@@ -1,0 +1,130 @@
+
+<h1 style="text-align: center;">Tất Cả Sản Phẩm</h1>
+<div class="row mb-4" >
+    <div ng-repeat="sp in sanpham | filter: keyword " class="col-lg-3 col-md-4 col-sm-6">
+        <div class="card" >
+            <img src="{{sp.anh}}" class="card-img-top" alt="...">
+            <div class="card-body text-center">
+              <a style="text-decoration: none; color: black;" href="#!chitiet/{{sp.id}}">
+                <h5 class="card-title" >{{sp.ten | uppercase}}</h5>
+              </a>
+              {{ '2023-08-25' | date: 'EEEE dd/MM/yyyy'}}
+              <h5 ng-if="sp.giakhuyenmai!=sp.giagoc" class="card-title text-danger">{{sp.giakhuyenmai | number }}đ</h5>
+              <h5 ng-if="sp.giakhuyenmai==sp.giagoc" class="card-title text-danger">{{sp.giagoc | number}}đ</h5>
+              <del ng-if="sp.giakhuyenmai!=sp.giagoc" class="card-text d-block">{{sp.giakhuyenmai |number}}đ</del>
+              <button ng-click="themGioHang(sp)" class="btn btn-warning w-100">MUA</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container my-5">
+
+  <footer class="bg-warning text-center text-lg-start text-white">
+    
+    <div class="container p-4">
+     
+      <div class="row my-4">
+      
+        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+
+          <div class="rounded-circle bg-white shadow-1-strong d-flex align-items-center justify-content-center mb-4 mx-auto" style="width: 150px; height: 150px;">
+            <img src="https://mdbootstrap.com/img/Photos/new-templates/animal-shelter/logo.png" height="70" alt=""
+                 loading="lazy" />
+          </div>
+
+          <p class="text-center">Bánh trung thu nhà làm ngon số 1 Việt Nam. Nếu dỡ xin hoàn lại 100% tiền và tặng thùng bánh ăn chơi</p>
+
+          <ul class="list-unstyled d-flex flex-row justify-content-center">
+            <li>
+              <a class="text-white px-2" href="#!">
+                <i class="fab fa-facebook-square"></i>
+              </a>
+            </li>
+            <li>
+              <a class="text-white px-2" href="#!">
+                <i class="fab fa-instagram"></i>
+              </a>
+            </li>
+            <li>
+              <a class="text-white ps-2" href="#!">
+                <i class="fab fa-youtube"></i>
+              </a>
+            </li>
+          </ul>
+
+        </div>
+       
+        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-uppercase mb-4">UPDATE HÀNG NGÀY</h5>
+
+          <ul class="list-unstyled">
+            <li class="mb-2">
+              <a href="#!" class="text-white">Bảng giá bánh trung thu</a>
+            </li>
+            <li class="mb-2">
+              <a href="#!" class="text-white">Hộp bánh trung thu</a>
+            </li>
+            <li class="mb-2">
+              <a href="#!" class="text-white">Sự kiện trung thu</a>
+            </li>
+            <li class="mb-2">
+              <a href="#!" class="text-white">Tin tức – hoạt động</a>
+            </li>
+           
+          </ul>
+        </div>
+       
+        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-uppercase mb-4">CHÍNH SÁCH KHÁCH HÀNG</h5>
+
+          <ul class="list-unstyled">
+            <li class="mb-2">
+              <a href="#!" class="text-white">Chính sách hoàn trả</a>
+            </li>
+            <li class="mb-2">
+              <a href="#!" class="text-white">Chính sách khách hàng</a>
+            </li>
+            <li class="mb-2">
+              <a href="#!" class="text-white">Chính sách bảo mật</a>
+            </li>
+            <li class="mb-2">
+              <a href="#!" class="text-white">Chính sách thanh toán</a>
+            </li>
+            <li class="mb-2">
+              <a href="#!" class="text-white">Chính sách vận chuyển</a>
+            </li>
+            
+          </ul>
+        </div>
+      
+        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-uppercase mb-4">LIÊN HỆ ĐƠN VỊ PHÂN PHỐI</h5>
+
+          <ul class="list-unstyled">
+            <li>
+              <p><i class="fas fa-map-marker-alt pe-2"></i>113 - Đồn Cảnh Sát Thành Phố HCM</p>
+            </li>
+            <li>
+              <p><i class="fas fa-phone pe-2"></i>0981419091</p>
+            </li>
+            <li>
+              <p><i class="fas fa-envelope pe-2 mb-0"></i>khangdeptrai.com</p>
+            </li>
+          </ul>
+        </div>
+        
+      </div>
+     
+    </div>
+   
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+      © 2023 Copyright: Khang dep trai
+    
+    </div>
+   
+  </footer>
+
+</div>

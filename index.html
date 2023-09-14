@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo ASM</title>
+    <link rel="stylesheet" href="bootstrap-5.3.0-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body ng-app="myapp" ng-controller="myctrl">
+  <nav class="navbar navbar-expand-lg bg-warning border-bottom border-bottom-dark" data-bs-theme="dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#!index"><span>Khang Shop</span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Trang Chủ</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="#!sanpham">Sản Phẩm</a>
+          </li>
+        
+          <li class="nav-item">
+            <a class="nav-link active" href="#!lienhe">Liên Hệ</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Tài Khoản
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#!dangnhap">Đăng Nhập</a></li>
+              <li><a class="dropdown-item" href="#!dangky">Đăng ký</a></li>
+              <li><hr class="dropdown-divider"></li>
+            </ul>
+          </li>
+        </ul>
+        <div class="d-flex">
+        
+          <form class="d-flex" role="search">
+            <div class="input-group">
+              <input class="form-control bg-white" type="search" placeholder="Search" aria-label="Search" ng-model="keyword">
+              <button class="btn btn-dark" type="submit" >Search</button>
+            </div>
+          </form>
+          <ul class="navbar-nav text-white align-items-center">
+            <li>
+              <a href="#!giohang">
+                <i class="fa-solid fa-cart-shopping fs-4"></i>
+                <div class="badge text-bg-light">{{tinhSoLuong()}}</div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div class="container">
+    <div ng-view></div>
+  </div>
+  <script src="https://kit.fontawesome.com/bcd15b30db.js" crossorigin="anonymous"></script>
+  <script src="bootstrap-5.3.0-dist/js/bootstrap.bundle.min.js"></script>
+  <script src="angular.min.js"></script>
+  <script src="angular-route.min.js"></script>
+  <script>
+  var app = angular.module('myapp', ['ngRoute']);
+  app.config(function($routeProvider){
+    $routeProvider
+    .when('/trangchu',{
+      templateUrl: 'trangchu.html?'+Math.random(),
+      controller: 'trangchuCtrl',
+    })
+    .when('/sanpham',{
+      templateUrl: 'sanpham.html?'+Math.random(),
+      controller: 'sanphamCtrl',
+    })
+    .when('/giohang',{
+      templateUrl: 'giohang.html?'+Math.random(),
+      controller: 'giohangCtrl',
+    })
+    .when('/danhmuc/:slug',{
+      templateUrl: 'danhmuc.html?'+Math.random(),
+      controller: 'danhmucCtrl',
+    })
+    .when('/dangnhap',{
+      templateUrl: 'dangnhap.html?'+Math.random(),
+      controller: 'dangnhapCtrl',
+      controllerAs: 'dangnhap',
+    })
+    .when('/dangky',{
+      templateUrl: 'dangky.html?'+Math.random(),
+      controller: 'dangkyCtrl',
+    })
+    .when('/chitiet/:id',{
+      templateUrl: 'chitiet.html?'+Math.random(),
+      controller: 'chitietCtrl',
+    })
+    .when('/lienhe' ,{
+      templateUrl: 'lienhe.html?'+Math.random(),
+      controller: 'lienheCtrl',
+    })
+    .otherwise({
+      //template: '<h1>404 - Không tìm thấy trang</h1>',
+      redirectTo: '/trangchu',
+    });
+    
+  });
+  app.controller('myctrl', function($scope){
+    $scope.keyword = "";
+    $scope.giohang = [];
+    $scope.themGioHang = function(sanpham, soluong=1){
+      //Cách 1: JS nâng cao
+      if($scope.giohang.filter(i => i.id == sanpham.id).length==0){
+        //TH1: Nếu chưa có sản phẩm đó thì thêm vào mảng giohang[]
+        sanpham.soluong = soluong;
+        $scope.giohang.push(sanpham);
+      }
+      else{
+        //TH2: Nếu đã có sản phẩm đó thì tăng số lượng lên
+        $scope.giohang.filter(i => i.id == sanpham.id)[0].soluong += soluong;
+      }
+      //Cách 2: JS cơ bản
+      /*var daCoSP = false;
+      var iSP = 0;
+      for(var sp of $scope.giohang){
+        if(sp.id == sanpham.id){
+          daCoSP = true;
+          break;
+        }
+        iSP++;
+      }
+      if(!daCoSP){
+        sanpham.soluong = 1;
+        $scope.giohang.push(sanpham);
+      }
+      else{
+        $scope.giohang[iSP].soluong++;
+      }*/
+    }
+    $scope.tinhSoLuong = function(){
+      var sum=0;
+      for(sp of $scope.giohang){
+        sum += sp.soluong;
+      }
+      return sum;
+    }
+    $scope.sanpham = [
+      {
+        id:1,
+        ten:'Bánh Trung Thu Tiramisu Phô Mai',
+        giagoc:200000,
+        giakhuyenmai:135000,
+        anh:'https://mordanbakery.vn/wp-content/uploads/2022/06/btt-tiramisu-pho-mai-768x768.jpg',
+        mota:`Lớp vỏ bánh đen tuyền từ than tre mang vẻ đẹp huyền bí ẩn bên trong chính là phần nhân Tiramisu mang hương thơm nồng nàn của cà phê, chút quyến rũ men say của rượu và đọng lại sau cùng chính là cái thơm béo của kem phô mai.Tiramira lừng danh của nước Ý kết hợp cùng kỹ thuật làm bánh trung thu truyền thống của các nghệ nhân Việt Nam đã tạo ra chiếc bánh ngọt ngào hương thơm lôi cuốn từ vỏ bánh bên ngoài cho đến nhân bánh bên trong.`,
+        slug:'nhanngot',
+      },
+      {
+        id:2,
+        ten:'Bánh Trung Thu Hạt Sen - Hạt Chia - Mác Ca',
+        giagoc:210000,
+        giakhuyenmai:145000,
+        anh:'https://mordanbakery.vn/wp-content/uploads/2022/06/btt-hs-hc-mc-768x768.jpg',
+        mota:`Hạt Macca mang vị bùi ngậy tinh tế, đặc trưng kết hợp cùng hương thơm vẹn tròn, ngọt bùi của hạt sen, nhấn nhá thêm chút hạt chia sần sật tạo cảm giác thích thú, vui miệng khi ăn, các nghệ nhân làm bánh đã khéo léo khi kết hợp các nguyên liệu để làm ra chiếc bánh trung thu hạt macca – hạt sen – hạt chia đầy bổ dưỡng, thơm bùi, ngọt dịu.Lớp vỏ bánh được nướng vàng ươm làm nổi bật lên họa tiết hoa Muồng Hoàng Yến chính là logo biểu tượng của Mordan Mooncake, phần nhân bánh đầy ắp được bao bọc bởi lớp vỏ mỏng giúp cho bạn không bị ngán khi thưởng thức.`,
+        slug:'nhanngot',
+      },
+      {
+        id:3,
+        ten:'Bánh Trung Thu Trà Xanh - Hạnh Nhân',
+        giagoc:220000,
+        giakhuyenmai:155000,
+        anh:'https://mordanbakery.vn/wp-content/uploads/2022/06/btt-tx-hn-1t-768x768.jpg',
+        mota:`Nổi bật với màu xanh tươi mát của lớp vỏ bánh xốp mềm kết hợp cùng phần nhân bánh ngọt mềm sánh mịn được tô điểm thêm những lát hạnh nhân béo giòn tạo cảm giác vui miệng khi ăn.Hương thơm dịu dàng đặc trưng của trà xanh quen thuộc nay đã có mặt trong chiếc bánh trung thu truyền thống tạo nên hương vị mới lạ giúp giảm đi cái ngấy thường gặp ở những món ngọt. Ngoài ra màu xanh tươi của bánh còn mang lại cảm giác thoải mái thư giãn, giúp bạn thưởng thức chiếc bánh trung thu thêm trọn vẹn.`,
+        slug:'nhanngot',
+      },
+      {
+        id:4,
+        ten:'Bánh Trung Thu Sò Điệp Sốt Hồng Công',
+        giagoc:200000,
+        giakhuyenmai:140000,
+        anh:'https://mordanbakery.vn/wp-content/uploads/2022/06/btt-so-diep-sot-hk-768x768.jpg',
+        mota:`Chiếc bánh trung thu với lớp vỏ màu đen của than tre gợi cho bạn sự tò mò muốn khám phá. Ẩn sau lớp vỏ bánh đầy huyền bí này chính là phần nhân từ sò điệp ngọt tươi được áo mình trong sốt HongKong huyền thoại còn được biết với tên gọi là sốt XO. Phần sốt XO cao cấp với nguyên liệu chính là cồi sò điệp khô càng làm cho phần sò điệp tươi trong nhân bánh thêm nổi bật và tỏa sáng.Lớp vỏ bánh mỏng được nướng căng bóng xốp mềm chứa đầy ắp phần nhân bên trong gồm: sò điệp, mứt gừng đỏ, mè, mỡ đường, … và nhấn nhá hương vị bởi chút mặn mặn, béo béo của trứng muối làm cho bánh không bị ngấy khi ăn.`,
+        slug:'nhanman',
+      },
+      {
+        id:5,
+        ten:'Bánh Trung Thu Yến Sào - Bí Đỏ',
+        giagoc:199000,
+        giakhuyenmai:130000,
+        anh:'https://mordanbakery.vn/wp-content/uploads/2023/07/btt-ys-hs-td-kt-768x768.jpg',
+        mota:`Với hàm lượng béo ít hơn so với dòng bánh thập cẩm, bánh trung thu Yến Sào Hạt Sen – Táo Đỏ – Kỷ Tử được đông đảo người dùng lựa chọn. Cũng bởi thành phần tạo nên chiếc bánh trung thu thơm ngon khá độc đáo và lạ miệng. Phần nhân là sự kết hợp độc đáo giữa yến sào thượng hạng và táo đỏ, hạt sen, tất cả tạo nên bánh trung thu Yến Sào Hạt Sen – Táo Đỏ – Kỷ Tử khác lạ, ấn tượng.Nằm trong tinh hoa ẩm thực Việt, bánh trung thu Yến Sào Hạt Sen – Táo Đỏ – Kỷ Tử đem đến một hơi thở hoàn toàn mới cho dòng bánh trung thu truyền thống lâu đời.Sử dụng nguyên liệu hoàn toàn từ thiên nhiên, bánh trung thu Yến Sào Hạt Sen – Táo Đỏ – Kỷ Tử đem lại vô vàn những công dụng tốt cho sức khỏe như: an thần, tăng cường vị giác, phát triển hồng cầu, điều trị các chứng bệnh khó ngủ, ngủ không sâu giấc,…Bánh trung thu Yến Sào Hạt Sen – Táo Đỏ – Kỷ Tử là sự kết hợp giữa bánh trung thu truyền thống và hiện đại. Với lớp vỏ bánh nướng vàng ươm, mềm mịn, thơm ngon truyền thống và nhân bánh được chế biến với công thức hiện đại, mới lạ. Bánh trung thu Yến Sào Hạt Sen – Táo Đỏ – Kỷ Tử là món quà Rằm tháng 8 ý nghĩa, cao cấp, sang trọng dành tặng cho người thân, bạn bè và đối tác.`,
+        slug:'nhanngot',
+      },
+      {
+        id:6,
+        ten:'Bánh Trung Thu Khoai Môn Hạt Óc Chó',
+        giagoc:299000,
+        giakhuyenmai:190000,
+        anh:'https://mordanbakery.vn/wp-content/uploads/2023/07/btt-km-oc.jpg',
+        mota:`Chọn lọc từ nguồn nguyên liệu tươi ngon, chất lượng cao nhất, bánh Trung thu Khoai Môn Hạt Óc Chó mang đến nhiều điều mới lạ trong BST hương vị bánh Trung thu năm nay. Chiếc bánh dẻo thơm, thanh ngọt được kết hợp độc đáo giữa công thức làm bánh xưa cũ cùng nguồn nguyên liệu đan xen giữa truyền thống và hiện đại – tạo nên hương vị mới lạ, thú vị trong ngày Tết Đoàn viên. Đặc biệt, với thành phần giàu chất xơ, bánh trung thu này sẽ rất thích hợp với những ai đang ăn kiêng.`,
+        slug:'nhanngot',
+      },
+      {
+        id:7,
+        ten:'Bánh Trung Thu Tôm Hùm Xốt Hồng Kông',
+        giagoc:299000,
+        giakhuyenmai:190000,
+        anh:'https://mordanbakery.vn/wp-content/uploads/2022/06/btt-tom-hum-sot-hk.jpg',
+        mota:`Nhân bánh cao cấp từ tôm hùm giàu khoáng chất và vitamin thiết yếu cho cơ thể được hòa quyện bởi sốt HongKong, loại sốt hải sản huyền thoại với tên gọi khác là sốt XO.Vị đậm đà, cay cay của sốt XO càng làm nổi bật lên hương vị hải sản của tôm hùm ngọt tươi, chắc thịt kết hợp cùng chút béo thơm của trứng muối làm cho hương vị được cân bằng, thơm ngon khó cưỡng.`,
+        slug:'nhanman',
+      },
+      {
+        id:8,
+        ten:'Bánh Trung Thu Gà Quay - Vi Cá ',
+        giagoc:299000,
+        giakhuyenmai:190000,
+        anh:'https://mordanbakery.vn/wp-content/uploads/2022/06/btt-gq-vc.jpg',
+        mota:`Phần nhân bánh cao cấp từ gà quay mang hương thơm đậm đà làm nổi bật lên vị ngọt thanh nhẹ nhàng của vi cá, khi ăn cảm giác sần sật như sụn nhưng rất giàu chất đạm, chất béo và 1 số khoáng chất cần thiết khác cho cơ thể.Chiếc bánh với lớp vỏ mỏng chứa hơn 80% nhân cao cấp từ gà quay và vi cá giúp mang đến cho bạn nhiều giá trị dinh dưỡng mà không hề bị ngán khi ăn vì đã có vị beo béo, mặn mặn của trứng muối giúp trung hòa lại hương vị.`,
+        slug:'nhanman',
+      },
+      {
+        id:9,
+        ten:'Bánh Trung Thu Yến Sào - Trà Xanh - Mắc Ca ',
+        giagoc:250000,
+        giakhuyenmai:170000,
+        anh:'https://mordanbakery.vn/wp-content/uploads/2023/07/btt-ys-tx-mc-768x768.jpg',
+        mota:`Bánh Trung Thu Yến Sào Trà Xanh Macca là sự kết hợp tinh tế giữa các nguyên liệu quý hiếm. Trong đó, yến sào có tác dụng giúp long đàm, bổ phổi, giúp phát triển hồng cầu, hỗ trợ điều trị bệnh ung thư và cải thiện tình trạng suy nhược cơ thể. Hạt macca có tác dụng bổ sung chất chống oxy hóa, tăng cường sức khỏe tim mạch, chống ung thư và cải thiện sức khỏe não bộ.Bánh trung thu yến sào trà xanh macca là dòng bánh trung thu thượng hạng, được chế biến từ những nguyên liệu cao cấp như yến sào và hạt macca Úc. Chính vì lý do này mà bánh trung thu yến sào trà xanh macca thường có giá cao hơn so với các loại bánh trung thu khác.`,
+        slug:'nhanngot',
+      },
+      {
+        id:10,
+        ten:'Bánh Trung Thu Yến Sào - Nhất Yến - Thượng Hạng ',
+        giagoc:299000,
+        giakhuyenmai:190000,
+        anh:'https://mordanbakery.vn/wp-content/uploads/2023/07/btt-ys-nhat-yen-768x768.jpg',
+        mota:`Nằm trong tinh hoa ẩm thực Việt, bánh trung thu Nhất Yến Thượng Hạng đem đến một hơi thở hoàn toàn mới cho dòng bánh trung thu truyền thống lâu đời.Bánh trung thu Nhất Yến Thượng Hạng là sự kết hợp giữa bánh trung thu truyền thống và hiện đại. Với lớp vỏ bánh nướng vàng ươm, mềm mịn, thơm ngon truyền thống và nhân bánh được chế biến với công thức hiện đại, mới lạ. Bánh trung thu Nhất Yến Thượng Hạng là món quà Rằm tháng 8 ý nghĩa, cao cấp, sang trọng dành tặng cho người thân, bạn bè và đối tác.`,
+        slug:'nhanngot',
+      },
+      {
+        id:7,
+        ten:'Bánh Trung Thu Đông Trùng Hạ Thảo',
+        giagoc:260000,
+        giakhuyenmai:170000,
+        anh:'https://mordanbakery.vn/wp-content/uploads/2023/07/btt-ys-dtht-768x768.jpg',
+        mota:``,
+        slug:'nhanngot',
+      },
+    ];
+  });
+  app.controller('danhmucCtrl', function($scope,$routeParams,$route){
+    var slug = $routeParams.slug;
+  $scope.danhmuc = $scope.sanpham.filter(i => i.slug == slug);
+  })
+  app.controller('giohangCtrl', function($scope){
+    $scope.tinhTongThanhTien = function(){
+      var sum = 0;
+      for(var sp of $scope.giohang){
+        sum += sp.soluong * sp.giakhuyenmai;
+      }
+      return sum;
+    }
+    $scope.xoa = function(id){
+      $scope.$parent.giohang = $scope.giohang.filter(i => i.id != id);
+    }
+    $scope.xoaHet = function(){
+      $scope.$parent.giohang = [];
+    }
+  });
+ 
+  app.controller('trangchuCtrl', function($scope){
+    $scope.danhmuc = [
+      {
+        'hinh':'https://mordanbakery.vn/wp-content/uploads/2022/06/hai-van.jpg',
+        'ten':'COMBO HỘP BÁNH TRUNG THU HẢI VÂN',
+        
+      },
+      {
+        'hinh':'https://mordanbakery.vn/wp-content/uploads/2022/06/thuy-nhac.jpg',
+        'ten':'COMBO HỘP BÁNH TRUNG THU THỦY NHẠC'
+        
+      },
+      {
+        'hinh':'https://mordanbakery.vn/wp-content/uploads/2022/06/phuc-thinh.jpg',
+        'ten':'COMBO HỘP BÁNH TRUNG THU PHÚC THỊNH'
+       
+      },
+      {
+        'hinh':'https://mordanbakery.vn/wp-content/uploads/2022/06/thinh-vuong.jpg',
+        'ten':'COMBO HỘP BÁNH TRUNG THU THỊNH VƯỢNG'
+        
+      },
+      {
+        'hinh':'https://mordanbakery.vn/wp-content/uploads/2023/07/cb-phuc-thinh-02-moi-768x768.jpg',
+        'ten':'COMBO HỘP BÁNH TRUNG THU THỊNH VƯỢNG 2'
+        
+      },
+      {
+        'hinh':'https://mordanbakery.vn/wp-content/uploads/2023/07/cb-phuc-thinh-01-moi-768x768.jpg',
+        'ten':'COMBO HỘP BÁNH TRUNG THU THỊNH VƯỢNG 3'
+        
+      },
+      {
+        'slug':'nhanngot',
+        'ten':'nhanngot'
+        
+      }, {
+        'slug':'nhanman',
+        'ten':'nhanman'
+        
+      },
+      
+
+     
+    ]
+    var gioihan = 4;
+    $scope.phantrang = {
+      gioihan: gioihan,
+      sotrang: Math.ceil($scope.sanpham.length / gioihan),
+      dangchon: 1,
+    }
+    $scope.sapxep = '';
+    console.log($scope.phantrang);
+
+  });
+  app.controller('sanphamCtrl', function($scope){
+    
+  });
+  app.controller('chitietCtrl', function($scope, $routeParams, $route){
+    var id = $routeParams.id;
+    $scope.sp = $scope.sanpham.filter(i => i.id == id)[0];
+    $scope.soluong = 1;
+  });
+  
+  app.controller('dangnhapCtrl', function($scope){
+    this.user = {
+      id: 123,
+      fullname: 'Lê Minh Khang'
+    }
+  });
+  app.controller('dangkyCtrl', function($scope){
+
+  });  
+</script>
+</body>
+</html>

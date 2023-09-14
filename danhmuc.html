@@ -1,0 +1,17 @@
+<div class="row mb-4" >
+    <div ng-repeat="sp in danhmuc | filter: keyword " class="col-lg-3 col-md-4 col-sm-6">
+        <div class="card" >
+            <img src="{{sp.anh}}" class="card-img-top" alt="...">
+            <div class="card-body text-center">
+              <a style="text-decoration: none; color: black;" href="#!chitiet/{{sp.id}}">
+                <h5 class="card-title" >{{sp.ten | uppercase}}</h5>
+              </a>
+              {{ '2023-08-25' | date: 'EEEE dd/MM/yyyy'}}
+              <h5 ng-if="sp.giakhuyenmai!=sp.giagoc" class="card-title text-danger">{{sp.giakhuyenmai | number }}đ</h5>
+              <h5 ng-if="sp.giakhuyenmai==sp.giagoc" class="card-title text-danger">{{sp.giagoc | number}}đ</h5>
+              <del ng-if="sp.giakhuyenmai!=sp.giagoc" class="card-text d-block">{{sp.giakhuyenmai |number}}đ</del>
+              <button ng-click="themGioHang(sp)" class="btn btn-warning w-100">MUA</button>
+            </div>
+        </div>
+    </div>
+</div>
